@@ -37,7 +37,6 @@ with pyrtl.conditional_assignment:
     with seconds == 59:
         with minutes != 59:
             minutes.next |= minutes + temp1
-    with seconds == 59:
         with minutes == 59:
             minutes.next |= pyrtl.Const(0, bitwidth = 6)
 # update the hours register here
@@ -45,10 +44,7 @@ with pyrtl.conditional_assignment:
     with seconds == 59:
         with minutes == 59:
             with hours != 23:
-                temp2 = pyrtl.Const(1, bitwidth = 5)
-                hours.next |= hours + temp2
-    with seconds == 59:
-        with minutes == 59:
+                hours.next |= hours + pyrtl.Const(1, bitwidth = 5)
             with hours == 23:
                 hours.next |= pyrtl.Const(0, bitwidth = 5)
 
@@ -64,7 +60,7 @@ if __name__ == "__main__":
     sim_trace = pyrtl.SimulationTrace()
     sim = pyrtl.Simulation(tracer=sim_trace)
 
-    for cycle in range(10): # 10 seconds
+    for cycle in range(3601): # 10 seconds
         sim.step({})
 
     ### Uncomment the following line to the whole trace
