@@ -19,4 +19,9 @@ result = pyrtl.Output(bitwidth=1, name='o_wg')
   with select == 1:
     result |= val_b """
     
-result <<= (val_b & select) | (val_a & !(select))
+result <<= (val_b & select) | (val_a & ~(select))
+
+# Simulate and testing design
+sim = pyrtl.Simulation()
+sim.step_multiple({'a': [1,1], 'b':[0,0], 's':[0,1]})
+sim.tracer.render_trace()
